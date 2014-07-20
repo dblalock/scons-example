@@ -2,23 +2,11 @@ import os
 
 Import('env')
 
-# ================================================================
-
-# works
-
-# env.Append(CPPPATH=['toolkit'])
-# env.Append(CPPPATH=['utils'])
-# print('running sconscript from %s' % os.getcwd())
-# env.SharedLibrary('toolkit', Glob("*/*.c"))
-
-
-# ================================================================
-
-# doesn't work:
-#	EDIT: works now
-
+# copy parent environment so our alterations don't affect it
 env = env.Clone()
 
+# add source directories (at all levels) to the include path
+# and add their contents are build targets
 matches = []
 for root, dirnames, filenames in os.walk(os.getcwd()):
 	for dirname in dirnames:
@@ -27,23 +15,9 @@ for root, dirnames, filenames in os.walk(os.getcwd()):
 		globStr = "%s/*.c*" % dirname
 		matches.append(Glob(globStr))
 
+# debug output
 print('src env CPPPATH:')
 print(env['CPPPATH'])
 
+# build a shared library
 env.SharedLibrary('../bin/toolkit', matches)
-
-# Mkdir('bin')
-
-# Copy('toolkit', '../bin')
-# Copy('../bin', '../toolkit')
-
-# Move("../bin/toolkit", "toolkit")
-# Command("../bin/toolkit", "toolkit.*", Move("$TARGET", "$SOURCE"))
-
-# Copy('../bin/toolkit', 'toolkit')
-
-# ================================================================
-
-# works (when above works)
-
-# env.Program('main', ['program/program.c'], LIBS=['toolkit'], LIBPATH='./')

@@ -11,19 +11,17 @@ for root, dirnames, filenames in os.walk('../src'):
 		dirPath = os.path.join('../src',dirname)
 		print('adding src dir to path: %s' % dirPath)
 		env.Append(CPPPATH=[dirPath])
-# env.Append(CPPPATH=['../src'])
 
-
+# initilize the set of targets to build
 matches = []
 
-# add the current directory in case there are files in it
+# add any files in the current directory
 currentDir = os.path.split(os.getcwd())[1]
 print('adding test dir to path: %s' % currentDir)
 env.Append(CPPPATH=['.'])
 matches.append(Glob("./*.c*"))
 
-# make a list of all targets in this dir and add their
-# parent dirs to the include path
+# add files in subdirectories
 for root, dirnames, filenames in os.walk(os.getcwd()):
 	for dirname in dirnames:
 		print('adding test dir to path: %s' % dirname)
@@ -31,11 +29,11 @@ for root, dirnames, filenames in os.walk(os.getcwd()):
 		globStr = "%s/*.c*" % dirname
 		matches.append(Glob(globStr))
 
-# env.Append(CPPPATH=['../bin/'])
+# debug output
 print('test env CPPPATH:')
 print(env['CPPPATH'])
-
 print("test files to build: ")
 print([ match[0].rstr() for match in matches])
 
+# build a program that uses the source files as a shared library
 env.Program('../bin/main', matches, LIBS=['toolkit'], LIBPATH='../bin/')

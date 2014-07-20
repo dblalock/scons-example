@@ -2,7 +2,7 @@
 # Set our required libraries
 libraries 		= []
 library_paths 	= ''
-cppDefines 		= {}#{'VERSION': 1}
+cppDefines 		= {}
 cppFlags 		= ['-Wall']#, '-Werror']
 cxxFlags 		= ['-std=c++11']
 
