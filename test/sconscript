@@ -1,0 +1,41 @@
+import os
+
+Import('env')
+
+# copy parent environment so our alterations don't affect it
+env = env.Clone()
+
+# add src dirs to include path
+for root, dirnames, filenames in os.walk('../src'):
+	for dirname in dirnames:
+		dirPath = os.path.join('../src',dirname)
+		print('adding src dir to path: %s' % dirPath)
+		env.Append(CPPPATH=[dirPath])
+# env.Append(CPPPATH=['../src'])
+
+
+matches = []
+
+# add the current directory in case there are files in it
+currentDir = os.path.split(os.getcwd())[1]
+print('adding test dir to path: %s' % currentDir)
+env.Append(CPPPATH=['.'])
+matches.append(Glob("./*.c*"))
+
+# make a list of all targets in this dir and add their
+# parent dirs to the include path
+for root, dirnames, filenames in os.walk(os.getcwd()):
+	for dirname in dirnames:
+		print('adding test dir to path: %s' % dirname)
+		env.Append(CPPPATH=[dirname])
+		globStr = "%s/*.c*" % dirname
+		matches.append(Glob(globStr))
+
+# env.Append(CPPPATH=['../bin/'])
+print('test env CPPPATH:')
+print(env['CPPPATH'])
+
+print("test files to build: ")
+print([ match[0].rstr() for match in matches])
+
+env.Program('../bin/main', matches, LIBS=['toolkit'], LIBPATH='../bin/')
