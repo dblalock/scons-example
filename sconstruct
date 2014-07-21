@@ -6,7 +6,8 @@ cppDefines 		= {}
 cppFlags 		= ['-Wall']#, '-Werror']
 cxxFlags 		= ['-std=c++11']
 
-# Let's define a common build environment first...
+# define the attributes of the build environment shared between
+# both the debug and release builds
 common_env = Environment()
 common_env.Append(LIBS 			= libraries)
 common_env.Append(LIBPATH 		= library_paths)

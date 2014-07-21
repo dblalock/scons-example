@@ -6,7 +6,7 @@
 extern "C" {
 #endif
 
-
+/** Just calls a function in toolkit.h */
 int runTests();
 
 
