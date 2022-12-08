@@ -34,7 +34,7 @@ debug_env.VariantDir('build/debug/test', 'test', duplicate=0)
 # Now that all build environment have been defined, let's iterate over
 # them and invoke the lower level SConscript files.
 for mode, env in dict(release=release_env,
-    	       	      debug=debug_env).iteritems():
+    	       	      debug=debug_env).items():
 	modeDir = 'build/%s' % mode
 	env.SConscript('%s/src/sconscript' % modeDir, {'env': env})
 	env.SConscript('%s/test/sconscript' % modeDir, {'env': env})
